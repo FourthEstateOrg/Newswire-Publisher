@@ -17,7 +17,7 @@ A settings menu in WordPress lets you customize the way WordPress handles conten
 For example, you can map categories to WordPress's tags, or use newswire subject codes as categories. Authors, copyright information, post status, and default categories are just some of the WordPress fields that can be configured from the Settings menu.
 
 # How do we signup for a Fourth Estate newswire subscription?
-The Fourth Estate Newswire (www.fourthestate.org/newswire/) provides Ready-to-publish news content delivered to you as the news unfolds. All content is original - created by a global team of journalists, producers, and photographers.
+The Fourth Estate Newswire (https://www.fourthestate.org/services/newswire/) provides Ready-to-publish news content delivered to you as the news unfolds. All content is original - created by a global team of journalists, producers, and photographers.
 
 # Help! I need support.
 Technical and implementation support is provided for free to Fourth Estate Newswire Subscribers, and available as a paid professional service to non-subscribers.
