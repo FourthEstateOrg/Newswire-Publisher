@@ -3,9 +3,9 @@ Contributors: FourthEstate, fourthestatetech
 Donate link: http://fourthestate.org/
 Tags: news, journalism, content, newsfeed, articles, news feed, news wire
 Requires at least: 4.7
-Tested up to: 5.9.1
-Stable tag: 1.0.0.5
-Version: 1.0.0.5
+Tested up to: 5.9.2
+Stable tag: 1.0.0.6
+Version: 1.0.0.6
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,6 +101,9 @@ Yes.  [Daily News Brief](https://dailynewsbrief.com/ "Daily News Brief") is an a
 3. The news content arrives automatically. Ready to publish.
 
 == Changelog ==
+
+= 1.0.0.6 -
+* Bugfix: Correct issue where author may not be correctly set on news import.
 
 = 1.0.0.5 -
 * Updated hyperlinks and version compliance.

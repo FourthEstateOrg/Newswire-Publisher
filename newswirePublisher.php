@@ -495,7 +495,7 @@ function nwpwp_autoload_data($request)
         } else {
           $author_id = $authorExist->user_id;
         }
-      } else if ($settings['author-byline'] == 'off') {
+      } else if ($settings['author-byline'] == 'off' || ! empty( $settings['author'] ) ) {
         $author_id = $settings['author'];
       } else {
         $author_id = 0;
