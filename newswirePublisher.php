@@ -565,7 +565,7 @@ function nwpwp_autoload_data($request)
         $post_ID = wp_insert_post($postarr, true);
 
 
-        $cstmupdate_post = array( 'ID'=> $id, 'post_status'   =>  $settings['status'] );
+        $cstmupdate_post = array( 'ID'=> $post_ID, 'post_status'   =>  $settings['status'] );
 
         wp_update_post($cstmupdate_post);
 
