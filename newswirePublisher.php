@@ -506,6 +506,18 @@ function nwpwp_autoload_data($request)
         $content = nwpwp_embed_images($content, $image);
       }
 
+      $places_taxonomies = [];
+      if(!empty($obj['place'])) {
+        foreach ($obj['place'] as $place) {
+          $place_term = term_exists( $place['name'], 'places' );
+ 
+          if ( ! $place_term ) {
+              $place_term = wp_insert_term( $place['name'], 'places' );
+          }
+          $places_taxonomies[] = (int) $place_term['term_id'];
+        }
+      }
+
 
 
       if ($sync) {
@@ -538,6 +550,10 @@ function nwpwp_autoload_data($request)
           wp_set_post_tags($post_ID, $taxonomyTag);
         }
 
+        if(!empty($places_taxonomies)) {
+          wp_set_post_terms($post_ID, $places_taxonomies, 'places', false);
+        }
+
         $wpdb->insert(
                 $wpdb->prefix . NWPWP_DB_TABLE_SYNC_POST, array(
             'post_id' => $post_ID,
@@ -564,6 +580,9 @@ function nwpwp_autoload_data($request)
 
         $post_ID = wp_insert_post($postarr, true);
 
+        if(!empty($places_taxonomies)) {
+          wp_set_post_terms($post_ID, $places_taxonomies, 'places', false);
+        }
 
         $cstmupdate_post = array( 'ID'=> $post_ID, 'post_status'   =>  $settings['status'] );
 
@@ -645,14 +664,35 @@ function nwpwp_autoload_data($request)
       }
     }
   }
+}
 
-
-
-
-
-
-
-
+if (!function_exists( __NAMESPACE__ . '\\register_post_places_taxonomy' )) {
+  add_action( 'init', __NAMESPACE__ . '\\register_post_places_taxonomy' );
+  function register_post_places_taxonomy() {
+    $labels = array(
+      'name' => _x( 'Places', 'taxonomy general name' ),
+      'singular_name' => _x( 'Place', 'taxonomy singular name' ),
+      'search_items' =>  __( 'Search Places' ),
+      'all_items' => __( 'All Places' ),
+      'parent_item' => __( 'Parent Place' ),
+      'parent_item_colon' => __( 'Parent Place:' ),
+      'edit_item' => __( 'Edit Place' ), 
+      'update_item' => __( 'Update Place' ),
+      'add_new_item' => __( 'Add New Place' ),
+      'new_item_name' => __( 'New Place Name' ),
+      'menu_name' => __( 'Places' ),
+    );    
+    
+    register_taxonomy('places',array('post'), array(
+      'hierarchical' => true,
+      'labels' => $labels,
+      'show_ui' => true,
+      'show_in_rest' => true,
+      'show_admin_column' => true,
+      'query_var' => true,
+      'rewrite' => array( 'slug' => 'places' ),
+    ));
+  }
 }
 
 ?>
