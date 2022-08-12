@@ -700,4 +700,14 @@ if (!function_exists( __NAMESPACE__ . '\\register_post_places_taxonomy' )) {
   }
 }
 
+add_shortcode('places_taxonomy_links', __NAMESPACE__ . '\\places_taxonomy_links' );
+function places_taxonomy_links() {
+  $places_list = get_the_term_list(get_the_ID(), 'places', '', apply_filters('generate_term_separator', ', '));
+  return sprintf(
+    '<span class="places-links"><span class="screen-reader-text">%1$s </span>%2$s</span> ',
+    esc_html_x( 'Places', 'Used after tag lists.', 'generatepress' ),
+    $places_list
+  );
+}
+
 ?>
