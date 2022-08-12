@@ -704,10 +704,21 @@ add_shortcode('places_taxonomy_links', __NAMESPACE__ . '\\places_taxonomy_links'
 function places_taxonomy_links() {
   $places_list = get_the_term_list(get_the_ID(), 'places', '', apply_filters('generate_term_separator', ', '));
   return sprintf(
-    '<span class="places-links"><span class="screen-reader-text">%1$s </span>%2$s</span> ',
+    '<span class="places-links">%3$s<span class="screen-reader-text">%1$s </span>%2$s</span> ',
     esc_html_x( 'Places', 'Used after tag lists.', 'generatepress' ),
-    $places_list
+    $places_list,
+    apply_filters( 'generate_inside_post_meta_item_output', '', 'places' )
   );
+}
+
+add_filter('generate_inside_post_meta_item_output', __NAMESPACE__ . '\\generate_inside_post_meta_item_output', 10, 2);
+function generate_inside_post_meta_item_output($output, $icon) {
+  if ( 'places' === $icon ) {
+    $output = '<span class="gp-icon icon-tag"><a aria-label="Places">Places:
+    </a></span>';
+  }
+
+  return $output;
 }
 
 ?>
