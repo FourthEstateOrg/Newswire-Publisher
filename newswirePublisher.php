@@ -40,6 +40,7 @@ define('NWPWP_DB_TABLE_USERS', 'users');
 
 
 require_once NWPWP_PLUGIN_DIR . '/settings.php';
+require_once NWPWP_PLUGIN_DIR . '/lib/countries.php';
 
 
 if (!function_exists('nwpwp_database_install')) {
@@ -507,12 +508,16 @@ function nwpwp_autoload_data($request)
       }
 
       $places_taxonomies = [];
+      $countries = Lib\get_newswire_countries();
       if(!empty($obj['place'])) {
         foreach ($obj['place'] as $place) {
-          $place_term = term_exists( $place['name'], 'places' );
+          $country = $countries[$place['code']];
+          if (empty($country)) continue;
+
+          $place_term = term_exists( $country, 'places' );
  
           if ( ! $place_term ) {
-              $place_term = wp_insert_term( $place['name'], 'places' );
+              $place_term = wp_insert_term( $country, 'places' );
           }
           $places_taxonomies[] = (int) $place_term['term_id'];
         }
