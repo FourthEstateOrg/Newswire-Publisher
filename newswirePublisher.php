@@ -39,6 +39,9 @@ define('NWPWP_DB_TABLE_POSTMETA', 'postmeta');
 define('NWPWP_DB_TABLE_USERS', 'users');
 
 
+require_once NWPWP_PLUGIN_DIR . '/inc/class-register-post-type.php';
+require_once NWPWP_PLUGIN_DIR . '/inc/class-register-admin-menu.php';
+
 require_once NWPWP_PLUGIN_DIR . '/settings.php';
 require_once NWPWP_PLUGIN_DIR . '/lib/countries.php';
 
@@ -528,13 +531,14 @@ function nwpwp_autoload_data($request)
       if ($sync) {
         $post_ID = $sync->post_id;
         $edit_post = array(
-            'ID' => $sync->post_id,
-            'post_title' => wp_strip_all_tags($obj['headline']),
-            'post_name' => wp_strip_all_tags($obj['headline']),
-            'post_content' => $content,
-            'post_author' => (int) $author_id,
+            'ID'                    => $sync->post_id,
+            'post_title'            => wp_strip_all_tags($obj['headline']),
+            'post_name'             => wp_strip_all_tags($obj['headline']),
+            'post_content'          => $content,
+            'post_author'           => (int) $author_id,
             'post_content_filtered' => $content,
-            'post_category' => $category
+            'post_category'         => $category,
+            'post_type'             => Inc\RegisterPostType::get_registered_post_type(),
         );
 
         if (isset($settings['post-formats'], $settings['post-formats-table']) and ! empty($obj['profile']) and $settings['post-formats'] == 'on') {
@@ -560,11 +564,12 @@ function nwpwp_autoload_data($request)
         }
 
         $wpdb->insert(
-                $wpdb->prefix . NWPWP_DB_TABLE_SYNC_POST, array(
+          $wpdb->prefix . NWPWP_DB_TABLE_SYNC_POST,
+          array(
             'post_id' => $post_ID,
-            'guid' => wp_strip_all_tags($obj['guid']),
-            'time' => current_time('mysql')
-                )
+            'guid'    => wp_strip_all_tags($obj['guid']),
+            'time'    => current_time('mysql')
+          ),
         );
 
         if ($settings['priority_threshhold'] && $settings['priority_threshhold'] >= $obj['priority']) {
@@ -574,13 +579,14 @@ function nwpwp_autoload_data($request)
         }
       } else {
         $postarr = array(
-            'post_title' => wp_strip_all_tags($obj['headline']),
-            'post_name' => wp_strip_all_tags($obj['headline']),
-            'post_content' => $content,
+            'post_title'            => wp_strip_all_tags($obj['headline']),
+            'post_name'             => wp_strip_all_tags($obj['headline']),
+            'post_content'          => $content,
             'post_content_filtered' => $content,
-            'post_author' => (int) $author_id,
-            'post_status' => $settings['status'],
-            'post_category' => $category,
+            'post_author'           => (int) $author_id,
+            'post_status'           => $settings['status'],
+            'post_category'         => $category,
+            'post_type'             => Inc\RegisterPostType::get_registered_post_type(),
         );
 
         $post_ID = wp_insert_post($postarr, true);
@@ -589,15 +595,9 @@ function nwpwp_autoload_data($request)
           wp_set_post_terms($post_ID, $places_taxonomies, 'places', false);
         }
 
-        $cstmupdate_post = array( 'ID'=> $post_ID, 'post_status'   =>  $settings['status'] );
+        $cstmupdate_post = array( 'ID'=> $post_ID, 'post_status' => $settings['status'] );
 
         wp_update_post($cstmupdate_post);
-
-
-
-
-
-
 
         if (isset($settings['post-formats'], $settings['post-formats-table']) and ! empty($obj['profile']) and $settings['post-formats'] == 'on') {
           if (isset($settings['post-formats-table'][$obj['profile']])) {
@@ -612,11 +612,11 @@ function nwpwp_autoload_data($request)
         $table_name = $wpdb->prefix . NWPWP_DB_TABLE_SYNC_POST;
 
         $wpdb->insert(
-                $table_name, array(
+          $table_name, array(
             'post_id' => $post_ID,
-            'guid' => wp_strip_all_tags($obj['guid']),
-            'time' => current_time('mysql')
-                )
+            'guid'    => wp_strip_all_tags($obj['guid']),
+            'time'    => current_time('mysql')
+          )
         );
 
         if ($settings['priority_threshhold'] && $settings['priority_threshhold'] >= $obj['priority']) {
@@ -688,7 +688,7 @@ if (!function_exists( __NAMESPACE__ . '\\register_post_places_taxonomy' )) {
       'menu_name' => __( 'Places' ),
     );    
     
-    register_taxonomy('places',array('post'), array(
+    register_taxonomy('places',array('post', 'news'), array(
       'hierarchical' => true,
       'labels' => $labels,
       'show_ui' => true,
