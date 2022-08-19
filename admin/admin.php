@@ -705,6 +705,7 @@ function nwpwp_newswire_admin()
                   </p>
               </form>
 
+              <button class="button" id="migrate-all-post-to-news">Migrate All Posts to News</button>
               <button class="button" id="migrate-post-to-news">Migrate Posts to News</button>
 
             </div>
@@ -884,15 +885,24 @@ function nwpwp_newswire_admin()
         jQuery('#migration-result').remove();
         run_post_migration();
       });
+      jQuery(document.body).on('click', '#migrate-all-post-to-news', function() {
+        window.migration_data = {
+          total_posts: 0,
+          total_migrated: 0,
+        }
+        add_loader();
+        jQuery('#migration-result').remove();
+        run_post_migration('migrate_all_posts_to_news');
+      });
       function add_loader() {
         jQuery('<p id="migration-loader"><img id="migration-loader" src="/wp-admin/images/loading.gif" /></p>').insertAfter('#migrate-post-to-news');
       }
       function remove_loader() {
         jQuery('#migration-loader').remove();
       }
-      function run_post_migration() {
+      function run_post_migration(action = 'migrate_posts_to_news') {
         var data = {
-          'action': 'migrate_posts_to_news',
+          'action': action,
         };
         jQuery.post(ajaxurl, data, function(response) {
           var json_response = JSON.parse(response);
@@ -900,7 +910,7 @@ function nwpwp_newswire_admin()
           if (json_response.success == 1) {
             window.migration_data.total_posts += json_response.total_posts;
             window.migration_data.total_migrated += json_response.total_migrated;
-            run_post_migration();
+            run_post_migration(action);
           } else {
             remove_loader();
             jQuery([
