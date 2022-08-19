@@ -695,7 +695,7 @@ function nwpwp_newswire_admin()
                                   <label for="places-meta-tag-link">Places Meta URL</label>
                               </th>
                               <td>
-                                  <input type="text" name="places-meta-tag-link" id="places-meta-tag-link" class="regular-text" value="<?php echo($settings['places-meta-tag-link']); ?>">
+                                  <input type="text" name="places-meta-tag-link" id="places-meta-tag-link" class="regular-text" value="<?php echo(isset($settings['places-meta-tag-link']) ? $settings['places-meta-tag-link']: ''); ?>">
                               </td>
                           </tr>
                       </tbody>

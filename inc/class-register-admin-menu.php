@@ -23,7 +23,7 @@ class RegisterAdminMenu {
         $admin_bar->add_menu( array(
           'id'    => 'newswire-publisher',
           'title' => 'Newswire Publisher',
-          'href'  => admin_url('options-general.php?page=Newswire-Publisher-main%2Fadmin.php'),
+          'href'  => admin_url('options-general.php?page=Newswire-Publisher-main%2Fadmin%2Fadmin.php'),
           'meta'  => array(
               'title' => __('Newswire Publisher'),            
           ),
