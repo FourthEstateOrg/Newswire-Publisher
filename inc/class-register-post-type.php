@@ -49,7 +49,7 @@ class RegisterPostType {
         $args = array(
             'label'               => __( $this->plural_upcase, 'newswirepublisher' ),
             'description'         => __( 'FourthEstate Newswire Wordpress plugin imported news', 'newswirepublisher' ),
-            'labels'              => $this->labels,
+            'labels'              => $this->get_labels(),
             'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
             'taxonomies'          => array( 'category', 'post_tag', 'places' ),
             'hierarchical'        => false,
