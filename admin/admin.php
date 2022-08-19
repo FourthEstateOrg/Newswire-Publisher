@@ -131,6 +131,7 @@ function nwpwp_newswire_admin()
           'update-log-date-format'  => sanitize_text_field($_POST['update-log-date-format']),
           'update-log-text'         => sanitize_text_field($_POST['update-log-text']),
           'update-log-position'     => sanitize_text_field($_POST['update-log-position']),
+          'places-meta-tag-link'    => sanitize_text_field($_POST['places-meta-tag-link']),
       );
       update_option('newswire_settings', $settings);
     } else if (get_option('newswire_settings')) {
@@ -685,12 +686,26 @@ function nwpwp_newswire_admin()
                           </tr>
                       </tbody>
                   </table>
+
+                  <h2>Meta Options</h2>
+                  <table class="form-table">
+                      <tbody>
+                          <tr>
+                              <th scope="row">
+                                  <label for="places-meta-tag-link">Places Meta URL</label>
+                              </th>
+                              <td>
+                                  <input type="text" name="places-meta-tag-link" id="places-meta-tag-link" class="regular-text" value="<?php echo($settings['places-meta-tag-link']); ?>">
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
                   <p class="submit">
                       <input type="submit" name="submit" id="submit" class="button button-primary" value="Save">
                   </p>
               </form>
 
-
+              <button class="button" id="migrate-post-to-news">Migrate Posts to News</button>
 
             </div>
             <!-- right section end -->
@@ -856,6 +871,49 @@ function nwpwp_newswire_admin()
           var validateDebounce = debounce(validateInput, 250);
           $("#post-format-tbody input").live('keyup', validateDebounce);
       });
+      window.migration_data = {
+        total_posts: 0,
+        total_migrated: 0,
+      }
+      jQuery(document.body).on('click', '#migrate-post-to-news', function() {
+        window.migration_data = {
+          total_posts: 0,
+          total_migrated: 0,
+        }
+        add_loader();
+        jQuery('#migration-result').remove();
+        run_post_migration();
+      });
+      function add_loader() {
+        jQuery('<p id="migration-loader"><img id="migration-loader" src="/wp-admin/images/loading.gif" /></p>').insertAfter('#migrate-post-to-news');
+      }
+      function remove_loader() {
+        jQuery('#migration-loader').remove();
+      }
+      function run_post_migration() {
+        var data = {
+          'action': 'migrate_posts_to_news',
+        };
+        jQuery.post(ajaxurl, data, function(response) {
+          var json_response = JSON.parse(response);
+          console.log(json_response)
+          if (json_response.success == 1) {
+            window.migration_data.total_posts += json_response.total_posts;
+            window.migration_data.total_migrated += json_response.total_migrated;
+            run_post_migration();
+          } else {
+            remove_loader();
+            jQuery([
+              '<div id="migration-result">',
+              '<p style="font-weight: bold; color: green;">Success!</p>',
+              '<p>Total Posts: ' + window.migration_data.total_posts +'</p>',
+              '<p>Total Migrated: ' + window.migration_data.total_migrated +'</p>',
+              '</div>',
+            ].join('')).insertAfter('#migrate-post-to-news');
+            jQuery('<p>Total Migrated: ' + window.migration_data.total_migrated +'</p>');
+          }
+        });
+      }
 
     </script>
     <style type="text/css">

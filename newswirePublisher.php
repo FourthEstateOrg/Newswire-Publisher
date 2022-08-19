@@ -3,7 +3,7 @@
 * Plugin Name:         Fourth Estate Newswire Publisher
 * Plugin URI:          https://www.FourthEstate.org
 * Description:         Imports news from the Fourth Estate Newswire to WordPress
-* Version:             1.0.0.5
+* Version:             1.0.9
 * Author:              Fourth Estate
 * Author URI:          https://www.FourthEstate.org
 *
@@ -41,6 +41,7 @@ define('NWPWP_DB_TABLE_USERS', 'users');
 
 require_once NWPWP_PLUGIN_DIR . '/inc/class-register-post-type.php';
 require_once NWPWP_PLUGIN_DIR . '/inc/class-register-admin-menu.php';
+require_once NWPWP_PLUGIN_DIR . '/inc/class-ajax.php';
 
 require_once NWPWP_PLUGIN_DIR . '/settings.php';
 require_once NWPWP_PLUGIN_DIR . '/lib/countries.php';
@@ -713,9 +714,14 @@ function places_taxonomy_links() {
 
 add_filter('generate_inside_post_meta_item_output', __NAMESPACE__ . '\\generate_inside_post_meta_item_output', 10, 2);
 function generate_inside_post_meta_item_output($output, $icon) {
+  $settings = get_option('newswire_settings', array(
+    'places-meta-tag-link' => '#'
+  ));
   if ( 'places' === $icon ) {
-    $output = '<span class="gp-icon icon-tag"><a aria-label="Places">Places:
-    </a></span>';
+    $output = sprintf(
+      '<span class="gp-icon icon-tag"><a aria-label="Places" href="%s">Places:</a></span>',
+      $settings['places-meta-tag-link'] ? $settings['places-meta-tag-link'] : '#',
+    );
   }
 
   return $output;
