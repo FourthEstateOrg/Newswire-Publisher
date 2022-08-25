@@ -3,7 +3,7 @@
 * Plugin Name:         Fourth Estate Newswire Publisher
 * Plugin URI:          https://www.FourthEstate.org
 * Description:         Imports news from the Fourth Estate Newswire to WordPress
-* Version:             1.0.9
+* Version:             1.0.10 
 * Author:              Fourth Estate
 * Author URI:          https://www.FourthEstate.org
 *
