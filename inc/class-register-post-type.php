@@ -6,8 +6,8 @@ class RegisterPostType {
     private static $instance = null;
 
     protected $post_type = 'news';
-    protected $singular_upcase = 'News';
-    protected $plural_upcase = 'News';
+    protected $singular_upcase = 'Newswire';
+    protected $plural_upcase = 'Newswire';
     protected $singular_downcase = 'news';
     protected $plural_downcase = 'news';
 
@@ -23,6 +23,7 @@ class RegisterPostType {
     public function __construct()
     {
         add_action( 'init', array( $this, 'register_post_type' ), 0 );
+        add_filter( 'pre_get_posts', array( $this, 'set_front_page_to_news' ) );
     }
 
     protected function get_labels()
@@ -64,11 +65,19 @@ class RegisterPostType {
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
-            'show_in_rest' => true,
+            'show_in_rest'        => true,
+            'menu_icon'           => 'dashicons-media-document'
         
         );
 
         register_post_type( $this->post_type, $args );  
+    }
+
+    public function set_front_page_to_news( $query ){
+        if ( !is_admin() && $query->is_main_query() && ( is_home() || is_archive() ) ) {
+            $query->set( 'post_type', array( 'post', 'news' ) );
+        }
+        return $query;  
     }
 
     public static function get_registered_post_type()
