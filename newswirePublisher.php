@@ -3,7 +3,7 @@
 * Plugin Name:         Fourth Estate Newswire Publisher
 * Plugin URI:          https://www.FourthEstate.org
 * Description:         Imports news from the Fourth Estate Newswire to WordPress
-* Version:             1.0.10 
+* Version:             1.0.11
 * Author:              Fourth Estate
 * Author URI:          https://www.FourthEstate.org
 *
@@ -40,7 +40,7 @@ define('NWPWP_DB_TABLE_USERS', 'users');
 
 
 require_once NWPWP_PLUGIN_DIR . '/inc/class-register-post-type.php';
-require_once NWPWP_PLUGIN_DIR . '/inc/class-register-admin-menu.php';
+// require_once NWPWP_PLUGIN_DIR . '/inc/class-register-admin-menu.php';
 require_once NWPWP_PLUGIN_DIR . '/inc/class-ajax.php';
 
 require_once NWPWP_PLUGIN_DIR . '/settings.php';

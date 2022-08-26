@@ -36,7 +36,14 @@ add_filter('plugin_action_links_newswire/newswirePublisher.php',  __NAMESPACE__ 
 
 if (!function_exists('nwpwp_newswire_admin_actions')) {
 function nwpwp_newswire_admin_actions() {
-  add_options_page('NEWSWIRE', 'Newswire Publisher', 'manage_options', __FILE__, 'nwpwp_newswire_admin');
+  add_submenu_page(
+    'edit.php?post_type='. \NewswirePublisherWordpressPlugin\Inc\RegisterPostType::get_registered_post_type(),
+    'Settings',
+    'Settings',
+    'manage_options',
+    __FILE__,
+    'nwpwp_newswire_admin',
+  );
 }
 }
 
