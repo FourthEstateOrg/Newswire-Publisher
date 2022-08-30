@@ -338,12 +338,14 @@ add_action('rest_api_init', function ()
 /*** adding settings link to plugins page **/
 // add menu links to the plugin entry in the plugins menu
 function plugin_add_settings_link( $links ) {
-    $settings_link = '<a href="options-general.php?page=fourth-estate-newswire-publisher/admin/admin.php">' . __( 'Settings' ) . '</a>';
-    array_push( $links, $settings_link );
+    $plugin_setting_links = array(
+      '<a href="edit.php?post_type=news&page=Newswire-Publisher%2Fadmin%2Fadmin.php">' . __( 'Settings' ) . '</a>'
+    );
+    $links = array_merge( $plugin_setting_links, $links );
   	return $links;
 }
 $plugin = plugin_basename( __FILE__ );
-add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
+add_filter( "plugin_action_links_$plugin", __NAMESPACE__ . '\\plugin_add_settings_link' );
 
 /**********************************************************************/
 

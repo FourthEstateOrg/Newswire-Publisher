@@ -213,6 +213,21 @@ function nwpwp_newswire_admin()
   }
 
     ?>
+    <style>
+      .row {
+          width: 100%;
+          display: flex;
+      }
+      .col-md-8 {
+          width: 75%;
+      }
+      .col-md-4 {
+          width: 25%;
+      }
+      .col-md-12 {
+          width: 100%;
+      }
+    </style>
     <div class="wrap">
         <h2>Fourth Estate Newswire Publisher</h2>
 
