@@ -339,7 +339,7 @@ add_action('rest_api_init', function ()
 // add menu links to the plugin entry in the plugins menu
 function plugin_add_settings_link( $links ) {
     $plugin_setting_links = array(
-      '<a href="edit.php?post_type=news&page=Newswire-Publisher%2Fadmin%2Fadmin.php">' . __( 'Settings' ) . '</a>'
+      '<a href="edit.php?post_type=news&page=Newswire-Publisher-main%2Fadmin%2Fadmin.php">' . __( 'Settings' ) . '</a>'
     );
     $links = array_merge( $plugin_setting_links, $links );
   	return $links;
